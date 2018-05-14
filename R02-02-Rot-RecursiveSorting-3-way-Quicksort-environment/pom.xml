@@ -117,7 +117,6 @@
 							<qualifiedNames>
 								<name>sorting.divideAndConquer.MergeSort</name>
 								<name>sorting.divideAndConquer.QuickSort</name>
-								<!-- name>sorting.simpleSorting.InsertionSort</name -->
 							</qualifiedNames>
 						</configuration>
 					</execution>

@@ -7,8 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import sorting.AbstractSorting;
-import sorting.divideAndConquer.QuickSort;
-import sorting.divideAndConquer.threeWayQuicksort.ThreeWayQuickSort;
+import sorting.variationsOfBubblesort.CombSort;
 
 public class StudentSortingTest {
 
@@ -40,7 +39,7 @@ public class StudentSortingTest {
 	private void getImplementation() {
 		// TODO O aluno deve instanciar sua implementação abaixo ao invés de
 		// null
-		this.implementation = new ThreeWayQuickSort<>();
+		this.implementation = new CombSort<>();
 	}
 
 	public void populaVetorTamanhoPar(Integer[] arrayPadrao) {
