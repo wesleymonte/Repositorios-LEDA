@@ -20,7 +20,7 @@ public class CombSort<T extends Comparable<T>> extends AbstractSorting<T> {
 				
 				swapped = false;
 				
-				for(int i = leftIndex; i < n - gap; i++) {
+				for(int i = leftIndex; i <= rightIndex - gap; i++) {
 					if(array[i].compareTo(array[i + gap]) > 0) {
 						Util.swap(array, i, i + gap);
 						swapped = true;
