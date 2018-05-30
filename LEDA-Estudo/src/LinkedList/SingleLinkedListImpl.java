@@ -24,7 +24,7 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
 		SingleLinkedListNode<T> aux = head;
 		while(!aux.isNIL()) {
 			size += 1;
-			aux = head.next;
+			aux = aux.next;
 		}
 		return size;
 	}
@@ -61,15 +61,19 @@ public class SingleLinkedListImpl<T> implements LinkedList<T> {
 
 	@Override
 	public void remove(T element) {
-		SingleLinkedListNode<T> aux = head;
-		if(head.data.equals(element)) {
-			head = head.next;
-		}
-		else {
-			while(!aux.isNIL() && !aux.next.data.equals(element)){
-				aux = aux.next;
+		if(!isEmpty()) {
+			SingleLinkedListNode<T> aux = head;
+			if(head.data.equals(element)) {
+				head = head.next;
 			}
-			aux.next = aux.next.next;
+			else {
+				while(!aux.isNIL() && !aux.next.data.equals(element)){
+					aux = aux.next;
+				}
+				if(!aux.isNIL()) {
+					aux.next = aux.next.next;
+				}
+			}
 		}
 	}
 

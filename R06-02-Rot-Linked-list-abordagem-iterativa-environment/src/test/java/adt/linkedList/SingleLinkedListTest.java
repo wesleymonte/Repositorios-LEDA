@@ -1,4 +1,4 @@
-package LinkedListTests;
+package adt.linkedList;
 
 import static org.junit.Assert.*;
 
@@ -7,10 +7,8 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import LinkedList.SingleLinkedListImpl;
+public class SingleLinkedListTest {
 
-public class LinkedListImplTest {
-	
 	public SingleLinkedListImpl<Integer> linkedlist1;
 	public SingleLinkedListImpl<Integer> linkedlist2;
 	public SingleLinkedListImpl<Integer> linkedlist3;
