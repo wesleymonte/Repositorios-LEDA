@@ -24,6 +24,7 @@ public class StackDoubleLinkedListImpl<T> implements Stack<T> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T pop() throws StackUnderflowException {
 		T rtn = null;
@@ -37,6 +38,7 @@ public class StackDoubleLinkedListImpl<T> implements Stack<T> {
 		return rtn;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T top() {
 		T rtn = null;

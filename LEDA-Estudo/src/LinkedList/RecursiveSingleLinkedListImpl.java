@@ -20,7 +20,13 @@ public class RecursiveSingleLinkedListImpl<T> implements LinkedList<T> {
 	@Override
 	public int size() {
 		int count = 0;
-		aux = 
+		if(isEmpty()) {
+			count += 1;
+		}
+		else {
+			count += 1 + next.size();
+		}
+		return count;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package adt.stack;
 
 import adt.linkedList.DoubleLinkedList;
 import adt.linkedList.RecursiveDoubleLinkedListImpl;
+import adt.linkedList.RecursiveSingleLinkedListImpl;
 
 public class StackRecursiveDoubleLinkedListImpl<T> implements Stack<T> {
 
@@ -15,32 +16,54 @@ public class StackRecursiveDoubleLinkedListImpl<T> implements Stack<T> {
 
 	@Override
 	public void push(T element) throws StackOverflowException {
-		// TODO Implement the method
-		throw new UnsupportedOperationException("Method not implemented");
+		if(isFull()) {
+			throw new StackOverflowException();
+		}
+		else if(element != null) {
+			top.insertFirst(element);
+		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T pop() throws StackUnderflowException {
-		// TODO Implement the method
-		throw new UnsupportedOperationException("Method not implemented");
+		T rtn = null;
+		if(isEmpty()) {
+			throw new StackUnderflowException();
+		}
+		else {
+			rtn = ((RecursiveSingleLinkedListImpl<T>) top).getData();
+			top.removeFirst();
+		}
+		return rtn;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public T top() {
-		// TODO Implement the method
-		throw new UnsupportedOperationException("Method not implemented");
+		T rtn = null;
+		if(!isEmpty()) {
+			rtn = ((RecursiveSingleLinkedListImpl<T>) top).getData();
+		}
+		return rtn;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		// TODO Implement the method
-		throw new UnsupportedOperationException("Method not implemented");
+		boolean empty = false;
+		if(top.isEmpty()) {
+			empty = true;
+		}
+		return empty;
 	}
 
 	@Override
 	public boolean isFull() {
-		// TODO Implement the method
-		throw new UnsupportedOperationException("Method not implemented");
+		boolean full = false;
+		if(top.size() == this.size) {
+			full = true;
+		}
+		return full;
 	}
 
 }

@@ -9,7 +9,7 @@ import adt.stack.StackDoubleLinkedListImpl;
 import adt.stack.StackOverflowException;
 import adt.stack.StackUnderflowException;
 
-public class Main {
+public class TestesInterativos {
 
 	public static void main(String[] args) throws Exception {
         DoubleLinkedListImpl<Integer> k = new DoubleLinkedListImpl<>();
