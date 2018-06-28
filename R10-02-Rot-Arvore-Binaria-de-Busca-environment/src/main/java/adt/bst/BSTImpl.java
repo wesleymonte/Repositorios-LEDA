@@ -147,7 +147,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	}
 
 	/*
-	 * Pega o menor nó da árvore
+	 * Pega o menor nï¿½ da ï¿½rvore
 	 */
 	private BSTNode<T> treeMinimum(BSTNode<T> node) {
 		BSTNode<T> minimum = node;
@@ -177,7 +177,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	}
 
 	/*
-	 * Pega o maior nó da árvore
+	 * Pega o maior nï¿½ da ï¿½rvore
 	 */
 	private BSTNode<T> treeMaximum(BSTNode<T> node) {
 		BSTNode<T> maximum = node;
@@ -200,6 +200,8 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	private void remove(BSTNode<T> node) {
 		if (node.isLeaf()) {
 			node.setData(null);
+			node.setLeft(null);
+			node.setRight(null);
 		} else {
 			BSTNode<T> aux = null;
 			if (!node.getRight().isEmpty()) {
@@ -228,7 +230,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	}
 
 	/*
-	 * Vai até a primeira posição nula do array e add o elemento.
+	 * Vai atï¿½ a primeira posiï¿½ï¿½o nula do array e add o elemento.
 	 */
 	private void visit(T element, T[] array) {
 		int count = 0;

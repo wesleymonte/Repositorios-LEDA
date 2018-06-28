@@ -77,6 +77,7 @@ public class SortComparatorBSTImpl<T extends Comparable<T>> extends BSTImpl<T> i
 	}
 	@Override
 	public T[] sort(T[] array) {
+		this.root = new BSTNode<T>();
 		T[] arraySorted = (T[]) new Comparable[size()]; 
 		int i = 0;
 		while(i < array.length && array[i] != null) {
