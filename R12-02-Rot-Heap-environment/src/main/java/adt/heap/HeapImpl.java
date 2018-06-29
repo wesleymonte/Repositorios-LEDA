@@ -69,7 +69,9 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 	public T[] toArray() {
 		ArrayList<T> resp = new ArrayList<T>();
 		for (T elem : this.heap) {
-			resp.add(elem);
+			if (elem != null) {
+				resp.add(elem);
+			}
 		}
 		return (T[]) resp.toArray(new Comparable[0]);
 	}
@@ -103,7 +105,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	private boolean validateIndex(int index) {
 		boolean valid = false;
-		if (index < this.size()) {
+		if (index < this.size() && index >= 0) {
 			valid = true;
 		}
 		return valid;
@@ -134,15 +136,21 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 
 	@Override
 	public void buildHeap(T[] array) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Not implemented yet!");
+		if (array != null) {
+			clear();
+			int i = 0;
+			while (i < array.length) {
+				insert(array[i++]);
+			}
+		}
 	}
 
 	@Override
 	public T extractRootElement() {
 		T root = rootElement();
-		if(!isEmpty()) {
-			Util.swap(heap, 0, index--);
+		if (!isEmpty()) {
+			Util.swap(heap, 0, index);
+			heap[index--] = null;
 			heapify(0);
 		}
 		return root;
@@ -151,7 +159,7 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 	@Override
 	public T rootElement() {
 		T root = null;
-		if(!isEmpty()) {
+		if (!isEmpty()) {
 			root = this.heap[0];
 		}
 		return root;
@@ -160,15 +168,48 @@ public class HeapImpl<T extends Comparable<T>> implements Heap<T> {
 	@Override
 	public T[] heapsort(T[] array) {
 		T[] SortedArray = null;
-		this.index = -1;
-		for(T e : array) {
-			insert(e);
+		if (array != null) {
+			clear();
+			for (T e : array) {
+				insert(e);
+			}
+			int size = size();
+			SortedArray = (T[]) new Comparable[size];
+
+			if (isMaxHeap()) {
+				size--;
+				while (size >= 0)
+					SortedArray[size--] = extractRootElement();
+			} else {
+				int i = 0;
+				while (i < size) {
+					SortedArray[i++] = extractRootElement();
+				}
+			}
 		}
-		SortedArray = (T[]) new Comparable[size()];
-		
-		int i = 0;
-		
-		
+		return SortedArray;
+	}
+
+	private boolean isMaxHeap() {
+		boolean ismax = true;
+		int index = 0;
+
+		while (index < size()) {
+			if (heap[index].compareTo(rootElement()) > 0) {
+				ismax = false;
+				break;
+			}
+			index++;
+		}
+		return ismax;
+	}
+
+	private void clear() {
+		int size = index;
+		while (size >= 0) {
+			heap[size--] = null;
+		}
+		index = -1;
 	}
 
 	@Override
