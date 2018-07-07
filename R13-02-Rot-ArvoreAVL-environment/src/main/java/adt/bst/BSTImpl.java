@@ -19,29 +19,15 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 
 	@Override
 	public int height() {
-		int height = 0;
-		if (this.isEmpty()) {
-			height = -1;
-		} else {
-			height = height(getRoot());
-		}
-		return height;
+		return height(getRoot()) - 1;
 	}
 
 	protected int height(BSTNode<T> node) {
 		int height = 0;
 		if (!node.isEmpty()) {
-			if (node.isLeaf()) {
-				height = 0;
-			} else {
-				int left = 1 + height(castNode(node.getLeft()));
-				int right = 1 + height(castNode(node.getRight()));
-				if (left > right) {
-					height = left;
-				} else {
-					height = right;
-				}
-			}
+			int left = 1 + height(castNode(node.getLeft()));
+			int right = 1 + height(castNode(node.getRight()));
+			height = Math.max(left, right);
 		}
 		return height;
 	}
@@ -149,7 +135,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	/*
 	 * Pega o menor n� da �rvore
 	 */
-	private BSTNode<T> treeMinimum(BSTNode<T> node) {
+	protected BSTNode<T> treeMinimum(BSTNode<T> node) {
 		BSTNode<T> minimum = node;
 		while (!minimum.getLeft().isEmpty()) {
 			minimum = castNode(minimum.getLeft());
@@ -179,7 +165,7 @@ public class BSTImpl<T extends Comparable<T>> implements BST<T> {
 	/*
 	 * Pega o maior n� da �rvore
 	 */
-	private BSTNode<T> treeMaximum(BSTNode<T> node) {
+	protected BSTNode<T> treeMaximum(BSTNode<T> node) {
 		BSTNode<T> maximum = node;
 		while (!maximum.getRight().isEmpty()) {
 			maximum = castNode(maximum.getRight());

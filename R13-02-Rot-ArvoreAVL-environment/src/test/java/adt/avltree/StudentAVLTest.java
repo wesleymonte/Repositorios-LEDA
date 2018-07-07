@@ -2,6 +2,8 @@ package adt.avltree;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.junit.Before;
 
@@ -52,12 +54,13 @@ public class StudentAVLTest {
 		avl.insert(9);
 		avl.insert(91);
 		avl.insert(12);
-
+		
 		avl.remove(-1);
 		assertEquals(4, avl.size());
 
 		avl.remove(91);
 		assertEquals(3, avl.size());
+		System.out.println(Arrays.toString(avl.preOrder()));
 		assertArrayEquals(new Integer[] { 12, 9, 55 }, avl.preOrder());
 
 		avl.remove(12);
