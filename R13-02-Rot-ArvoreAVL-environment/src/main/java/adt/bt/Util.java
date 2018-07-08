@@ -12,9 +12,20 @@ public class Util {
 	 */
 	public static <T extends Comparable<T>> BSTNode<T> leftRotation(BSTNode<T> node) {
 		BSTNode<T> pivot = (BSTNode<T>) node.getRight();
-		node.setRight(pivot.getLeft());
-		pivot.setLeft(node);
-		node = pivot;
+		
+		T aux = node.getData();
+		node.setData(pivot.getData());
+		
+		pivot.setData(aux);	
+		
+		node.setRight(pivot.getRight());
+		
+		pivot.setRight(pivot.getLeft());
+		pivot.setLeft(node.getLeft());
+		node.setLeft(pivot);
+		node.getRight().setParent(node);
+		pivot.getLeft().setParent(pivot);
+		
 		return pivot;
 	}
 
@@ -26,10 +37,19 @@ public class Util {
 	 */
 	public static <T extends Comparable<T>> BSTNode<T> rightRotation(BSTNode<T> node) {
 		BSTNode<T> pivot = (BSTNode<T>) node.getLeft();
-		node.setLeft(pivot.getRight());
-		pivot.setRight(node);
-		node = pivot;
+		
+		T aux = node.getData();
+		node.setData(pivot.getData());
+		pivot.setData(aux);
+		node.setLeft(pivot.getLeft());
+		pivot.setLeft(pivot.getRight());
+		pivot.setRight(node.getRight());
+		node.setRight(pivot);
+		node.getLeft().setParent(node);
+		pivot.getRight().setParent(pivot);
+		
 		return pivot;
+		
 	}
 
 	public static <T extends Comparable<T>> T[] makeArrayOfComparable(int size) {
