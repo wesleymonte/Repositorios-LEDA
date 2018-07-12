@@ -61,79 +61,84 @@ public class AVLCountAndFillImpl<T extends Comparable<T>> extends AVLTreeImpl<T>
 	@Override
 	public void fillWithoutRebalance(T[] array) {
 		if (isEmpty()) {
-			T[] xxx = (T[]) new Comparable[array.length];
-			quickSort(array, 0, array.length);
-			insertMiddle(array, 0, array.length - 1, xxx);
+			Arrays.sort(array, 0, array.length - 1);
+			T[] sortedAVL = (T[]) new Comparable[array.length];
+			sortForAVL(array, 0, array.length - 1, sortedAVL);
+			insertInAVL(sortedAVL);
 		} else {
 			T[] oldAVL = order();
 			this.root = new BSTNode<T>();
 			T[] newAVL = concatenateArrays(oldAVL, array);
-			Arrays.sort(newAVL);
+			Arrays.sort(array, 0, array.length - 1);
 			
-			T[] ordenado = (T[]) new Comparable[array.length];
+			T[] sortedAVL = (T[]) new Comparable[newAVL.length];
 			
-			insertMiddle(newAVL, 0, newAVL.length - 1, ordenado);
-
-			int i = 0;
-			int j = (ordenado.length / 2) + 1;
-			int cont = 0;
-			while (j < ordenado.length) {
-				for (int k = 0; k < Math.pow(2, cont); k++) {
-					insert(array[i]);
+			sortForAVL(newAVL, 0, newAVL.length - 1, sortedAVL);
+			insertInAVL(sortedAVL);
+		}
+	}
+	
+	private void insertInAVL(T[] sortedArray) {
+		int l1 = (sortedArray.length - 1) / 2;
+		int l2 = (sortedArray.length - 1) - l1;
+		T[] array1 = (T[]) new Comparable[l1];
+		T[] array2 = (T[]) new Comparable[l2];
+		
+		insert(sortedArray[0]);
+		
+		System.arraycopy(sortedArray, 1, array1, 0, l1);
+		System.arraycopy(sortedArray, l1 + 1, array2, 0, l2);
+		
+		int i = 0;
+		insert(array1[i]);
+		insert(array2[i]);
+		i++;
+		
+		if(l1 == l2) {
+			while(i + 3 < l1) {
+				insert(array1[i]);
+				insert(array1[i + 3]);
+				insert(array2[i]);
+				insert(array2[i + 3]);
+				i++;
+			}
+		} else {
+			while(i + 2 <= l1) {
+				if(i + 3 == l1) {
+					insert(array1[i + 2]);
+					insert(array2[i]);
+					insert(array2[i + 3]);
+					break;
+				} else {
+					insert(array1[i]);
+					insert(array1[i + 2]);
+					insert(array2[i]);
+					insert(array2[i + 3]);
 					i++;
 				}
-				for (int k = 0; k < Math.pow(2, cont); k++) {
-					insert(array[j]);
-					j++;
-				}
-				cont++;
 			}
+			
 		}
+		
 	}
 
-	private T[] insertMiddle(T[] array, int leftIndex, int rightIndex, T[] ordenado) {
+	private void sortForAVL(T[] array, int leftIndex, int rightIndex, T[] ordenado) {
 		if (validateInput(array, leftIndex, rightIndex)) {
 			int middle = (rightIndex + leftIndex) / 2;
-			insertArray(ordenado, array[middle]);
-			insertMiddle(array, leftIndex, middle - 1, ordenado);
-			insertMiddle(array, middle + 1, rightIndex, ordenado);
-		}
-		return ordenado;
-	}
-
-	private void insertArray(T[] array, T x) {
-		for (int i = 0; i < array.length; i++) {
-			if (array[i] == null) {
-				array[i] = x;
-			}
+			insertInArray(ordenado, array[middle]);
+			sortForAVL(array, leftIndex, middle - 1, ordenado);
+			sortForAVL(array, middle + 1, rightIndex, ordenado);
 		}
 	}
 
-	private void quickSort(T[] array, int leftIndex, int rightIndex) {
-		if (validateInput(array, leftIndex, rightIndex)) {
-			int pi = partition(array, leftIndex, rightIndex);
-			quickSort(array, leftIndex, pi - 1);
-			quickSort(array, pi + 1, rightIndex);
+	private void insertInArray(T[] array, T element) {
+		int i = 0;
+		while(i < array.length && array[i] != null) {
+			i++;
 		}
-	}
-
-	private int partition(T[] array, int leftIndex, int rightIndex) {
-		int pivot = rightIndex;
-		int i = leftIndex - 1;
-
-		for (int j = leftIndex; j < rightIndex; j++) {
-			if (array[j].compareTo(array[pivot]) <= 0) {
-				swap(array, ++i, j);
-			}
+		if(i < array.length && array[i] == null) {
+			array[i] = element;
 		}
-		swap(array, pivot, ++i);
-		return i;
-	}
-
-	private void swap(T[] array, int i, int j) {
-		T temp = array[i];
-		array[i] = array[j];
-		array[j] = array[i];
 	}
 
 	private boolean validateInput(Object[] array, int leftIndex, int rightIndex) {
