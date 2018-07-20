@@ -71,10 +71,31 @@ public class BNode<T extends Comparable<T>> {
 	public T getElementAt(int index){
 		return this.elements.get(index);
 	}
+//	protected void split(){
+//		int mediana = elements.size() / 2;
+//		parent.addElement(this.elements.remove(mediana));
+//		BNode<T> newNode = new BNode<T>(this.getOrder());
+//		for(int i = mediana; i < elements.size(); i++) {
+//			newNode.addElement(elements.remove(i));
+//		}
+//		int indexOfNewChildren = parent.indexOfChild(this) + 1;
+//		parent.addChild(indexOfNewChildren, newNode);
+//	}
+	
 	protected void split(){
-		//TODO Implement your code here
-		throw new UnsupportedOperationException("Not implemented yet!");
+		int mediana = elements.size() / 2;
+		BNode<T> newNode = new BNode<T>(this.getOrder());
+		for(int i = mediana; i < elements.size(); i++) {
+			newNode.addElement(elements.remove(i));
+		}
+		int indexOfNewChildren = parent.indexOfChild(this) + 1;
+		parent.addChild(indexOfNewChildren, newNode);
 	}
+	
+	protected int indexOfMediana() {
+		return elements.size() / 2;
+	}
+	
 	protected void promote(){
 		//TODO Implement your code here
 		throw new UnsupportedOperationException("Not implemented yet!");
