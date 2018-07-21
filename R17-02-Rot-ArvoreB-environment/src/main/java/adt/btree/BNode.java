@@ -83,10 +83,16 @@ public class BNode<T extends Comparable<T>> {
 //	}
 	
 	protected void split(){
-		int mediana = elements.size() / 2;
+		int mediana = (elements.size() + 1)/ 2;
 		BNode<T> newNode = new BNode<T>(this.getOrder());
 		for(int i = mediana; i < elements.size(); i++) {
 			newNode.addElement(elements.remove(i));
+		}
+		if(!this.children.isEmpty()) {
+			int j = children.size();
+			for(int i = mediana + 1; i < j; i++) {
+				newNode.addChild(i - (mediana + 1), this.children.remove(i - (i - (mediana + 1))));
+			}
 		}
 		int indexOfNewChildren = parent.indexOfChild(this) + 1;
 		parent.addChild(indexOfNewChildren, newNode);

@@ -26,29 +26,29 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 	}
 
 	private int height(BNode<T> node) {
-		int height = -1;
-		if(!this.isEmpty()) {
-			if(node.isLeaf()) {
-				height = 1;
-			} else {
-				height += 1 + height(node.getChildren().get(0));
+		int height = 0;
+		if(this.isEmpty()) {
+			height = -1;
+		} else {
+			if(!node.isLeaf()) {
+				height = 1 + height(node.getChildren().get(0));
 			}
 		}
 		return height;
 	}
-	
+
 	private int numberOfNodes() {
 		int numberOfNodes = 0;
-		if(!isEmpty()) {
+		if (!isEmpty()) {
 			numberOfNodes = numberOfNodes(getRoot());
 		}
 		return numberOfNodes;
 	}
-	
+
 	private int numberOfNodes(BNode<T> node) {
 		int num = 1;
-		if(!node.isLeaf()) {
-			for(BNode<T> children : node.getChildren()) {
+		if (!node.isLeaf()) {
+			for (BNode<T> children : node.getChildren()) {
 				num += numberOfNodes(children);
 			}
 		}
@@ -61,20 +61,20 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 		depthLeftOrder(getRoot(), array);
 		return array;
 	}
-	
+
 	private void depthLeftOrder(BNode<T> node, BNode<T>[] array) {
 		addInArray(array, node);
-		for(BNode<T> children : node.getChildren()) {
+		for (BNode<T> children : node.getChildren()) {
 			depthLeftOrder(children, array);
 		}
 	}
-	
+
 	private void addInArray(BNode<T>[] array, BNode<T> node) {
 		int i = 0;
-		while(i < array.length && array[i] != null) {
+		while (i < array.length && array[i] != null) {
 			i++;
 		}
-		if(i < array.length) {
+		if (i < array.length) {
 			array[i] = node;
 		}
 	}
@@ -83,17 +83,17 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 	public int size() {
 		return size(this.getRoot());
 	}
-	
+
 	private int size(BNode<T> node) {
 		int size = sizeOfNode(node);
-		
-		for(BNode<T> children : node.getChildren()) {
+
+		for (BNode<T> children : node.getChildren()) {
 			size += size(children);
 		}
-		
+
 		return size;
 	}
-	
+
 	private int sizeOfNode(BNode<T> node) {
 		return node.getElements().size();
 	}
@@ -102,50 +102,61 @@ public class BTreeImpl<T extends Comparable<T>> implements BTree<T> {
 	public BNodePosition<T> search(T element) {
 		return search(getRoot(), element);
 	}
-	
-	public BNodePosition<T> search(BNode<T> node, T element){
+
+	public BNodePosition<T> search(BNode<T> node, T element) {
 		int i = 0;
 		BNodePosition<T> rtn = new BNodePosition<T>(null, -1);
-		while(i < node.getElements().size() && node.getElementAt(i).compareTo(element) < 0) {
+		while (i < node.getElements().size() && node.getElementAt(i).compareTo(element) < 0) {
 			i++;
 		}
-		if(i < node.getElements().size()) {
-			if(node.getElementAt(i).compareTo(element) == 0) {
-				rtn = new BNodePosition<T>(node, i);
-			} else if(!node.isLeaf()){
-				rtn = search(node.getChildren().get(i + 1), element);
-			}
+		if(i < node.getElements().size() && node.getElementAt(i).compareTo(element) == 0) {
+			rtn = new BNodePosition<T>(node, i + 1);
+		} else if(!node.isLeaf()) {
+			rtn = search(node.getChildren().get(i), element);
 		}
 		return rtn;
 	}
 
 	@Override
 	public void insert(T element) {
-		// TODO Implement your code here
-		throw new UnsupportedOperationException("Not Implemented yet!");
+		insert(getRoot(), element);
 
 	}
-	
-	public void insert(BNode<T> node, T element) {
-		if(node.isLeaf()) {
-			if(node.isFull()) {
-				node.addElement(element);
-				T elementMediana = node.getElements().remove(node.indexOfMediana());
-				node.split();
-				insert(node.getParent(), elementMediana);
-			} else {
-				node.addElement(element);
-			}
+
+	private void insert(BNode<T> node, T element) {
+		if (node.isLeaf()) {
+			verifyAdd(node, element);
 		} else {
 			int i = 0;
-			while(i < node.getElements().size() && node.getElementAt(i).compareTo(element) < 0) {
+			while (i < node.getElements().size() && node.getElementAt(i).compareTo(element) < 0) {
 				i++;
 			}
-			if(i < node.getElements().size()) {
+			if (i < node.getElements().size()) {
 				insert(node.getChildren().get(i + 1), element);
 			} else {
 				insert(node.getChildren().get(i), element);
 			}
+		}
+	}
+
+	private void verifyAdd(BNode<T> node, T element) {
+		if (node.isFull()) {
+			if (node.getParent() == null) {
+				node.setParent(new BNode<T>(node.getOrder()));
+				node.getParent().addChild(0, node);
+				node.addElement(element);
+				T elementMediana = node.getElements().remove(node.indexOfMediana());
+				node.split();
+				this.root = node.getParent();
+				verifyAdd(node.getParent(), elementMediana);
+			} else {
+				node.addElement(element);
+				T elementMediana = node.getElements().remove(node.indexOfMediana());
+				node.split();
+				verifyAdd(node.getParent(), elementMediana);
+			}
+		} else {
+			node.addElement(element);
 		}
 	}
 
